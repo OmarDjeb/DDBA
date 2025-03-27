@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/kaplay@3001/dist/kaplay.js"></script>
+</head>
+<body>
+    <script>
+        let k = kaplay ({
+            width: 4000,
+            height: 1000
+        })
+        k.add([
+            k.rect(k.width(), k.height()),
+            k.pos(0, 0),
+            k.color(0, 200, 255)
+        ]);
+        k.setGravity(1000)
+        k.loadBean();
+        loadSprite("ghosty","immagine/ghosty.png");
+        const Dodo = k.add([
+            k.sprite("bean"),
+            k.pos(200,800),
+            k.area(),
+            k.body()
+        ])
+
+        let pavimento1 = k.add([
+            k.rect(2600,300),
+            k.pos(0,800),
+            k.area(),
+            k.color(85,150,47),
+            k.body({ isStatic: true })
+        ])
+
+        let pavimento2 = k.add([
+            k.rect(3600,300),
+            k.pos(3720,800),
+            k.area(),
+            k.color(85,150,47),
+            k.body({ isStatic: true })
+        ])
+
+        let b1 = k.add([
+            k.rect(25,150),
+            k.pos(20,483),
+            k.move(k.vec2(100,0),50),
+            k.color(255,165,0),
+            k.area(),
+            k.body({ isStatic: true })
+        ])
+        let direzione = 1; 
+
+        let vel= 1000;
+
+        k.onUpdate(() => {
+            b1.move(vel * direzione, 0);
+
+            if (b1.pos.x >= b4.pos.x - 10) {
+                direzione = -1;
+            }
+
+            if (b1.pos.x <= 0) {
+                direzione = 1;
+            }
+        });
+
+        let b2 = k.add([
+            k.rect(120,70),
+            k.pos(1000,600),
+            k.color(255,165,0),
+            k.area(),
+            k.body({ isStatic: true })
+        ])
+
+        let b3_1 = k.add([
+        k.rect(110, 70),
+        k.pos(950, 280),
+        k.color(255,165,0),
+        k.body({ isStatic: true })
+        ])
+
+
+        let b3_2 = k.add([
+            k.rect(60, 70),
+            k.pos(1060, 280),
+            k.color(255,165,0),
+            k.area(),
+            k.body({ isStatic: true })
+        ])
+
+        let b3_3 = k.add([
+        k.rect(10, 70),
+        k.pos(940, 280),
+        k.color(255,165,0),
+        k.area(),
+        k.body({ isStatic: true })
+        ])
+
+
+        let b5 = k.add([
+            k.rect(12,200),
+            k.pos(1667,150),
+            k.color(80, 200, 255),
+            k.area(),
+            k.body({ isStatic: true })
+        ])
+
+        let direzione2 = 1; 
+
+        let vel2 = 50;
+
+        k.onUpdate(() => {
+            b5.move(0,vel2 * direzione2);
+
+            if (b5.pos.y >= 300) {
+                direzione2 = -1;
+            }
+
+            if (b5.pos.y <= 20) {
+                direzione2 = 1;
+            }
+            if(Dodo.pos.x>b4.pos.x)
+            {
+                window.scrollBy(20,0);
+                k.setGravity(1500);
+                if(Dodo.pos.x<b4.pos.x+200)
+                {
+                    window.scrollBy(-100,0);
+                    k.setGravity(1000);
+                }
+            }
+        });
+        let b4 = k.add([
+            k.rect(120,800),
+            k.pos(1667,150),
+            k.color(85,150,47),
+            k.area(),
+            k.body({ isStatic: true })
+        ])
+
+        let oggettiAttr = [
+            { width: 60, height: 70, x: 2650, y: 670, color: [0, 165, 255] },
+            { width: 60, height: 60, x: 2950, y: 470, color: [0, 200, 255,255] },
+            { width: 60, height: 60, x: 2950, y: 530, color: [0, 165, 255] },
+            { width: 60, height: 60, x: 2450, y: 550, color: [0, 200, 255] },
+            { width: 60, height: 60, x: 2650, y: 420, color: [0, 165, 255] },
+            { width: 60, height: 60, x: 3300, y: 337, color: [0, 165, 255] },
+            { width: 60, height: 60, x: 3300, y: 670, color: [0, 165, 255] },
+            { width: 60, height: 60, x: 3200, y: 220, color: [0, 165, 255] },
+            { width: 60, height: 60, x: 3200, y: 140, color: [0, 200, 255] },
+        ];
+
+        oggettiAttr.forEach(data => {
+            if(data.x==3300 && data.y==670)
+            k.add([
+                k.rect(data.width, data.height),
+                k.pos(data.x, data.y),
+                k.color(...data.color),
+                k.body({ isStatic:true })
+            ]);
+            else
+            k.add([
+                k.rect(data.width, data.height),
+                k.pos(data.x, data.y),
+                k.color(...data.color),
+                k.area(),
+                k.body({ isStatic: true })
+            ]);
+        });
+        let b7=k.add([
+            k.rect(120,800),
+            k.pos(3600,150),
+            k.color(0, 200, 255,255),
+            k.area(),
+            k.body({ isStatic: true })
+        ]);
+
+        k.onUpdate(() => {
+            if(Dodo.pos.x>3600)
+            {
+                b7.destroy();
+            }
+        });
+
+
+
+        let i=0;
+        Dodo.onKeyPress("w", (event) => {
+            /*if (i<2)          doppio salto che ho disabilitato
+            {
+                Dodo.jump();
+                i++;
+            }
+
+            if (i >= 2 && Dodo.isGrounded())
+            {
+                Dodo.jump();
+                i=1;
+            }*/
+           if(Dodo.isGrounded())
+           Dodo.jump();
+            
+        })
+        Dodo.onKeyDown("d", (event) => {
+            Dodo.move(500,0);
+        })
+        Dodo.onKeyDown("a", (event) => {
+            Dodo.move(-500,0);
+        })
+        k.onUpdate(() => {
+            if (Dodo.pos.y > 800) {
+                window.location.reload();
+            }
+        });
+    </script>
+</body>
+</html>
